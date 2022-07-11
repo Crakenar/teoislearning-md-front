@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import { onMounted, ref } from "vue";
 import router from "@/router";
-import {store} from "@/assets/Store";
+import { store } from "@/assets/Store";
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "@/components/HelloWorld.vue";
 
-
-const mockAccount = { username: "t", password: "t"}
+const mockAccount = { username: "t", password: "t" };
 
 onMounted(() => {
-  if (!store.authenticated){
+  if (!store.authenticated) {
     router.replace({ name: "login" });
   }
 });
@@ -29,20 +28,28 @@ onMounted(() => {
       <HelloWorld msg="Welcome to teoislearning-md !" />
 
       <nav>
-        <RouterLink v-if="store.authenticated" to="/login" v-on:click.native="store.logout()" replace>Logout</RouterLink>
+        <RouterLink
+          v-if="store.authenticated"
+          to="/login"
+          v-on:click.native="store.logout()"
+          replace
+          >Logout</RouterLink
+        >
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink v-if="store.authenticated" to="/mdpreview">MD Editor</RouterLink>
+        <RouterLink v-if="store.authenticated" to="/mdpreview"
+          >MD Editor</RouterLink
+        >
       </nav>
     </div>
   </header>
   <RouterView />
 
-<!--  <div id="app">-->
-<!--    <div id="nav">-->
-<!--      <router-link v-if="authenticated" to="/login" v-on:click.native="logout()" replace>Logout</router-link>-->
-<!--    </div>-->
-<!--    <router-view @authenticated="setAuthenticated" />-->
-<!--  </div>-->
+  <!--  <div id="app">-->
+  <!--    <div id="nav">-->
+  <!--      <router-link v-if="authenticated" to="/login" v-on:click.native="logout()" replace>Logout</router-link>-->
+  <!--    </div>-->
+  <!--    <router-view @authenticated="setAuthenticated" />-->
+  <!--  </div>-->
 </template>
 
 <style>

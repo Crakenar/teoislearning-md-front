@@ -2,28 +2,41 @@
   <div v-if="!store.authenticated" id="login">
     <h1>Login</h1>
     <div class="form">
-      <input v-model="input.username.value" name="username" placeholder="Username" type="text"/>
-      <input v-model="input.password.value" name="password" placeholder="Password" type="password"/>
+      <input
+        v-model="input.username.value"
+        name="username"
+        placeholder="Username"
+        type="text"
+      />
+      <input
+        v-model="input.password.value"
+        name="password"
+        placeholder="Password"
+        type="password"
+      />
       <button type="button" v-on:click="login()">Login</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref} from "vue";
-import {store} from "../assets/Store";
+import { ref } from "vue";
+import { store } from "../assets/Store";
 import router from "../router";
 
 const input = {
   username: ref(""),
-  password: ref("")
-}
+  password: ref(""),
+};
 
 function login() {
   if (input.username.value !== "" && input.password.value !== "") {
-    if (input.username.value === store.mockAccount.username && input.password.value === store.mockAccount.password) {
+    if (
+      input.username.value === store.mockAccount.username &&
+      input.password.value === store.mockAccount.password
+    ) {
       store.setAuthenticated(true);
-      router.replace({name: "mdpreview"});
+      router.replace({ name: "mdpreview" });
     } else {
       console.log("The username and / or password is incorrect");
     }
@@ -36,7 +49,6 @@ function login() {
 <style scoped>
 #login {
   text-align: center;
-
 }
 
 .form {
