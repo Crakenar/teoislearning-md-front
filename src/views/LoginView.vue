@@ -42,7 +42,7 @@ const form = ref({
 async function login() {
   console.log(import.meta.env.VITE_API_URL);
   resStatus.value = 0;
-  axios.post(import.meta.env.VITE_API_URL + "/api/authentication", form.value, {
+  axios.post(import.meta.env.VITE_API_URL + '/api/authentication', form.value, {
     headers: {
       // remove headers
     }
