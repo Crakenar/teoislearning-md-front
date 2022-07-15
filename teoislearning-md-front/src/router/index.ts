@@ -6,19 +6,19 @@ const router = createRouter({
     {
       path: "/",
       redirect: {
-        name: "login"
-      }
+        name: "login",
+      },
     },
     {
       path: "/login",
       name: "login",
-      component: () => import("../views/LoginView.vue")
+      component: () => import("../views/LoginView.vue"),
     },
     {
       path: "/mdpreview",
       name: "mdpreview",
-      component: () => import("../views/MarkdownPreviewView.vue")
-    }
+      component: () => import("../views/MarkdownPreviewView.vue"),
+    },
   ],
 });
 

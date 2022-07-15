@@ -8,7 +8,9 @@ defineProps<{
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>
-      This application is for creating, updating some .md file saved on a mysql DB then used on <a href="https://teoislearning.com" target="_blank">teoislearning</a>
+      This application is for creating, updating some .md file saved on a mysql
+      DB then used on
+      <a href="https://teoislearning.com" target="_blank">teoislearning</a>
     </h3>
   </div>
 </template>
