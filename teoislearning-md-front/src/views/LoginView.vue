@@ -2,19 +2,26 @@
   <div v-if="!store.authenticated" id="login">
     <h1>Login</h1>
     <div class="form">
-      <input
-        v-model="input.username.value"
-        name="username"
-        placeholder="Username"
-        type="text"
-      />
-      <input
-        v-model="input.password.value"
-        name="password"
-        placeholder="Password"
-        type="password"
-      />
-      <button type="button" v-on:click="login()">Login</button>
+      <form>
+        <div class="form-group">
+          <input
+            v-model="form.username"
+            name="username"
+            placeholder="Username"
+            type="text"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            v-model="form.password"
+            name="password"
+            placeholder="Password"
+            type="password"
+          />
+        </div>
+        <button type="button" v-on:click="login()">Login</button>
+        <p v-if="resStatus !== 200 && resStatus !== 0">Wrong username of password</p>
+      </form>
     </div>
   </div>
 </template>
@@ -22,27 +29,32 @@
 <script setup>
 import { ref } from "vue";
 import { store } from "../assets/Store";
+import axios from "axios";
 import router from "../router";
 
-const input = {
-  username: ref(""),
-  password: ref(""),
-};
+const resStatus = ref(0);
 
-function login() {
-  if (input.username.value !== "" && input.password.value !== "") {
-    if (
-      input.username.value === store.mockAccount.username &&
-      input.password.value === store.mockAccount.password
-    ) {
+const form = ref({
+  password: "",
+  username: "",
+});
+
+async function login() {
+  console.log(import.meta.env.VITE_API_URL);
+  resStatus.value = 0;
+  axios.post(import.meta.env.VITE_API_URL + "/api/authentication", form.value, {
+    headers: {
+      // remove headers
+    }
+  }).then((res) => {
+    if (res.status === 200) {
+      resStatus.value = 200;
       store.setAuthenticated(true);
       router.replace({ name: "mdpreview" });
-    } else {
-      console.log("The username and / or password is incorrect");
     }
-  } else {
-    console.log("A username and password must be present");
-  }
+  }).catch(() => {
+    resStatus.value = 404;
+  });
 }
 </script>
 
@@ -60,5 +72,8 @@ function login() {
 .form > * {
   padding: 5px;
   margin: 4px;
+}
+p {
+  color: red;
 }
 </style>
