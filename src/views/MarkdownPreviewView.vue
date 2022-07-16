@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import { marked } from "marked";
+import {marked} from 'marked'
 import axios from "axios";
 
 const tipsActive = ref<boolean>(false);
