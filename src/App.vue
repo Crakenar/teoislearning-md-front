@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import router from "@/router";
 import { store } from "@/assets/Store";
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "@/components/HelloWorld.vue";
 
-const mockAccount = { username: "t", password: "t" };
 
 onMounted(() => {
   if (!store.authenticated) {
@@ -26,7 +25,6 @@ onMounted(() => {
 
     <div class="wrapper">
       <HelloWorld msg="Welcome to teoislearning-md !" />
-
       <nav>
         <RouterLink
           v-if="store.authenticated"
@@ -47,7 +45,10 @@ onMounted(() => {
 
 <style>
 @import "@/assets/base.css";
-
+body {
+  display: flex;
+  place-items: center;
+}
 #app {
   max-width: 1280px;
   margin: 0 auto;
@@ -103,41 +104,5 @@ nav a:first-of-type {
   border: 0;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>

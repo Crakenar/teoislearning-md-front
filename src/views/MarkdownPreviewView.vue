@@ -14,7 +14,7 @@
     </div>
     <div>
       <span>.MD Editor</span>
-      <textarea id="" v-model="markdown" cols="30" name="" rows="10"></textarea>
+      <textarea id="" v-model="form.descriptionMD" cols="30" name="" rows="10"></textarea>
     </div>
     <div>
       <span>PREVIEW IN HTML</span>
@@ -23,54 +23,120 @@
 
     <div class="btn-type">
       <form v-on:submit.prevent="sendMD">
-        <input
-          v-model="form.type"
-          type="radio"
-          name="type"
-          id="projects"
-          value="projects"
-        />
-        <label for="projects">Projets</label>
-        <input
-          v-model="form.type"
-          type="radio"
-          name="type"
-          id="experiences"
-          value="experiences"
-        />
-        <label for="experiences">Experiences</label>
+        <div>
+          <label for="title">Title</label>
+          <input id="title" v-model="form.title" name="title" type="text" />
+        </div>
+        <div>
+          <label for="date">Date</label>
+          <input id="date" v-model="form.date_work" name="date" type="text" />
+        </div>
+        <div>
+          <label for="date">Company</label>
+          <input id="date" v-model="form.company" name="company" type="text" />
+        </div>
+        <div>
+          <label for="date">Duration</label>
+          <input id="date" v-model="form.duration" name="duration" type="text" />
+        </div>
+        <div>
+          <label for="date">Image Path</label>
+          <input id="date" v-model="form.imgPath" name="imgPath" type="text" />
+        </div>
+        <div>
+          <label for="experiences">Experiences</label>
+          <input
+              id="experiences"
+              v-model="form.typeMD"
+              name="type"
+              type="radio"
+              value="experiences"
+          />
+        </div>
+        <div>
+          <label for="experiences">FR</label>
+          <input
+              id="fr"
+              v-model="form.language"
+              name="language"
+              type="radio"
+              value="fr"
+          />
+          <label for="experiences">EN</label>
+          <input
+              id="en"
+              v-model="form.language"
+              name="language"
+              type="radio"
+              value="en"
+          />
+        </div>
         <div>
           <button>Submit</button>
         </div>
       </form>
     </div>
+    <div>
+      <ListMdFiles/>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import ListMdFiles from "@/components/ListMdFiles.vue";
+import type {MD_File} from "@/Model/MD_File";
+import {store} from "@/Store";
+
+import {computed, ref, watchEffect} from "vue";
 import {marked} from 'marked'
 import axios from "axios";
 
+const URL_MD_API = import.meta.env.VITE_API_URL + '/api/md';
 const tipsActive = ref<boolean>(false);
+
 const form = ref({
-  type: "",
+  typeMD: "",
+  descriptionMD: "",
+  title: "",
+  date_work: "",
+  language: "",
+  company: "",
+  duration: "",
+  imgPath: "",
+  id: null,
 });
 
-const markdown = ref("# Remplissez cet espace avec un style type '.md'");
 const markdownToHTML = computed(() => {
-  return marked(markdown.value);
+  if (form.value.descriptionMD) {
+    return marked(form.value.descriptionMD);
+  } else {
+    return marked('# Entrez votre markdown');
+  }
 });
 
 function sendMD() {
+  const currentMD:MD_File = store.getCurrentMD();
+  form.value.id = currentMD.id ? currentMD.id : null;
   console.log(form.value);
-  // axios.post('/markdownTOHTML', form.value)
-  //     .then((res) => {
-  //       console.log(res)
-  //     }).catch((error) => {
-  //       console.log(error)
-  //     })
+  axios.post(URL_MD_API, form.value)
+      .then((res) => {
+        console.log('post completed successfully',res)
+      })
 }
+
+watchEffect(() => {
+  const currentMD:MD_File = store.getCurrentMD();
+  if (currentMD) {
+    form.value.id = currentMD.id ? currentMD.id : null;
+    form.value.title = currentMD.title;
+    form.value.descriptionMD = currentMD.descriptionMD;
+    form.value.typeMD = currentMD.typeMD;
+    form.value.date_work = currentMD.date_work;
+    form.value.language = currentMD.language;
+    form.value.company = currentMD.company;
+  }
+
+});
 </script>
 
 <style scoped>
